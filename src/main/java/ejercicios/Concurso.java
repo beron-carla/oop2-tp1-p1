@@ -35,6 +35,36 @@ public class Concurso {
 
     }
 
+    public boolean participanteInscripto(Participante participante){
+        return this.inscriptos.contains(participante);
+    }
+
+    public void nuevaInscripcion(Participante participante, LocalDate fechaInscripcion){
+        if (validarFechas(fechaInscripcion)){
+            throw new RuntimeException(FECHA_FUERA_DE_RANGO);
+        }
+        else{
+            gestionarInscripcion(participante, fechaInscripcion);
+        }
+    }
+
+    private boolean validarFechas(LocalDate fechaInscripcion){
+        return fechaInscripcion.isBefore(this.fechaInicio) || fechaInscripcion.isAfter(this.fechaFin);
+    }
+
+    private void gestionarInscripcion(Participante participante, LocalDate fechaInscripcion){
+        if (!participanteInscripto(participante)){
+            this.inscriptos.add(participante);
+            this.fechaInscripcion = fechaInscripcion;
+            gestionarPuntos(participante, fechaInscripcion);
+        }
+    }
+    private void gestionarPuntos(Participante participante, LocalDate fechaInscripcion){
+        if(this.fechaInicio.isEqual(fechaInscripcion)){
+            participante.sumarPuntos();
+        }
+    }
+
     private boolean fechaNull(LocalDate fecha) {
         if (fecha == null){
             return true;
