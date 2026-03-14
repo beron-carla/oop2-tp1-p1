@@ -71,4 +71,7 @@ public class Concurso {
         }
         return false;
     }
+    public int cantidadInscriptos(){
+        return this.inscriptos.size();
+    }
 }
