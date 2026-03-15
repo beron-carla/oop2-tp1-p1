@@ -10,5 +10,6 @@ public class ConcursoTest {
     @Test
     public void test01(){
         //un participante se inscribe a un concurso el mismo dia de inicio
+        var maria = new Participante("234567", "Maria Perez", 1, "mperez@gmail.com");
     }
 }
