@@ -20,6 +20,10 @@ public class Participante {
         this.puntos += PUNTOS_GANADOS;
     }
 
+    public int puntos(){
+        return this.puntos;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -32,10 +36,5 @@ public class Participante {
         return Objects.hash(nombre);
     }
 
-    public int id(){
-        return this.id;
-    }
-    public String email(){
-        return this.email;
-    }
+
 }

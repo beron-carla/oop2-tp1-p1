@@ -18,14 +18,14 @@ public class Concurso {
     private LocalDate fechaInscripcion;
 
     public Concurso (int id, String nombre, LocalDate fechaInicio, LocalDate fechaFin){
+        if (fechaNull(fechaFin) || fechaNull(fechaInicio)){
+            throw new RuntimeException(FECHA_NULA);
+        }
         if (fechaInicio.isAfter(fechaFin)){
             throw new RuntimeException(FECHA_INICIO_INCORRECTA);
         }
         if (fechaFin.isBefore(fechaInicio)){
             throw new RuntimeException(FECHA_FIN_INCORRECTA);
-        }
-        if (fechaNull(fechaFin) || fechaNull(fechaInicio)){
-            throw new RuntimeException(FECHA_NULA);
         }
         this.id = id;
         this.inscriptos = new ArrayList<>();
