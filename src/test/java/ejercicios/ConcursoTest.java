@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ConcursoTest {
 
     @Test
-    public void test01() {
+    public void testInscripciónExitosa() {
         //un participante se inscribe a un concurso
         //setup
         var maria = new Participante(1, "maria", "23456789", "mperez@gmail.com");
@@ -26,7 +26,7 @@ public class ConcursoTest {
         assertEquals(1, unConcurso.cantidadInscriptos());
     }
     @Test
-    public void test02(){
+    public void testInscripcionPrimerDia(){
         //un participante se inscribe a un concurso el primer dia de abierta la inscripción
         //setup
         var maria = new Participante(1, "maria", "23456789", "mperez@gmail.com");
@@ -44,7 +44,7 @@ public class ConcursoTest {
 
     }
     @Test
-    public void test03(){
+    public void testInscripcionFueraDeRango(){
         //un participante se inscribe fuera de rango
         //setup
         var maria = new Participante(1, "maria", "23456789", "mperez@gmail.com");
@@ -69,7 +69,7 @@ public class ConcursoTest {
 
     }
     @Test
-    public void test04(){
+    public void testFechaNula(){
         //Creación de concurso con fecha null
         RuntimeException execption = null;
         try {
