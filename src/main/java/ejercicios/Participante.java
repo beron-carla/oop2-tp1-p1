@@ -1,5 +1,7 @@
 package ejercicios;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Participante {
@@ -9,11 +11,13 @@ public class Participante {
     public String dni;
     public String email;
     public int puntos;
+    public LocalDateTime fechaInscripcion;
 
     public Participante(int id, String nombre, String dni, String email){
         this.id = id;
         this.nombre = nombre;
         this.email = email;
+
     }
 
     public void sumarPuntos(){
@@ -23,6 +27,10 @@ public class Participante {
     public int puntos(){
         return this.puntos;
     }
+    public void fechaDeInscripcion(LocalDateTime fechaInscripcion){
+        this.fechaInscripcion = fechaInscripcion;
+    }
+
 
     @Override
     public boolean equals(Object o) {
