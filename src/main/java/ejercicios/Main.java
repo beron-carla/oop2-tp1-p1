@@ -8,6 +8,7 @@ public class Main {
         LocalDate fechaInicio = LocalDate.of(2025, 2, 11);
         LocalDate fechaFin = LocalDate.of(2025, 2, 15);
         RegistroDeInscriptos registro = new ArchivoDeInscriptos("F:\\proyectos\\sistemas\\2026-2028\\archivoInscriptos.txt");
+//        RegistroDeInscriptos registroBD = new PersistenciaInscriptos();
         Concurso concurso = new Concurso(1, "ConcursoGanador",fechaInicio, fechaFin, registro);
         concurso.nuevaInscripcion(participante, fechaInicio);
     }
