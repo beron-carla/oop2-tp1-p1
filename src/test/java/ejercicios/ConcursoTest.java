@@ -3,29 +3,31 @@ package ejercicios;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import static ejercicios.Participante.PUNTOS_GANADOS;
 import static org.junit.jupiter.api.Assertions.*;
 public class ConcursoTest {
     Participante maria;
     Concurso concurso;
-    LocalDateTime fechaInicio;
-    LocalDateTime fechaFin;
-    LocalDateTime fechaInscripcion;
+    LocalDate fechaInicio;
+    LocalDate fechaFin;
+    LocalDate fechaInscripcion;
+    RegistroDeInscriptos registro;
 
     @BeforeEach
     void setUp(){
         this.maria = new Participante(1, "maria", "23456789", "mperez@gmail.com");
-        this.fechaInicio = LocalDateTime.of(2025, 2, 11, 12, 10, 5);
-        this.fechaFin = LocalDateTime.of(2025, 2, 15, 12, 20, 1);
-        this.concurso = new Concurso(1, "concurso 1", fechaInicio, fechaFin);
+        this.fechaInicio = LocalDate.of(2025, 2, 11);
+        this.fechaFin = LocalDate.of(2025, 2, 15);
+        this.registro = new ArchivoDeInscriptos("F:\\proyectos\\sistemas\\2026-2028\\archivoInscriptos.txt");
+        this.concurso = new Concurso(1, "concurso 1", fechaInicio, fechaFin,registro);
     }
     @Test
     public void testInscripciónExitosa() {
         //un participante se inscribe a un concurso
         //setup
-        this.fechaInscripcion = LocalDateTime.of(2025, 2, 13, 12, 20, 1);
+        this.fechaInscripcion = LocalDate.of(2025, 2, 13);
 
         //ejercitación
         concurso.nuevaInscripcion(maria, fechaInscripcion);
@@ -53,7 +55,7 @@ public class ConcursoTest {
     public void testInscripcionFueraDeRango(){
         //un participante se inscribe fuera de rango
         //setup
-        LocalDateTime fechaInscripcion = LocalDateTime.of(2025, 2, 16, 12, 20, 1);
+        LocalDate fechaInscripcion = LocalDate.of(2025, 2, 16);
 
         //ejercitación y verificación
         RuntimeException exception = assertThrows(RuntimeException.class, ()->{
@@ -72,7 +74,7 @@ public class ConcursoTest {
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
 
-            new Concurso(1, "concurso 1", null, null);
+            new Concurso(1, "concurso 1", null, null, registro);
 
         });
         assertNotNull(exception);

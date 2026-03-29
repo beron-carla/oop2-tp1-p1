@@ -1,7 +1,6 @@
 package ejercicios;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Participante {
@@ -11,7 +10,7 @@ public class Participante {
     public String dni;
     public String email;
     public int puntos;
-    public LocalDateTime fechaInscripcion;
+    public LocalDate fechaInscripcion;
 
     public Participante(int id, String nombre, String dni, String email){
         this.id = id;
@@ -27,7 +26,7 @@ public class Participante {
     public int puntos(){
         return this.puntos;
     }
-    public void fechaDeInscripcion(LocalDateTime fechaInscripcion){
+    public void fechaDeInscripcion(LocalDate fechaInscripcion){
         this.fechaInscripcion = fechaInscripcion;
     }
 

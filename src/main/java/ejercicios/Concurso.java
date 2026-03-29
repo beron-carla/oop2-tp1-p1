@@ -1,6 +1,6 @@
 package ejercicios;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,13 +11,14 @@ public class Concurso {
     public static final String FECHA_FUERA_DE_RANGO= "La fecha de inscripción está fuera de rango";
 
     private String nombre;
-    private int id;
+    private int idConcurso;
     private List<Participante> inscriptos;
-    private LocalDateTime fechaInicio;
-    private LocalDateTime fechaFin;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
+    private RegistroDeInscriptos registro;
 
 
-    public Concurso (int id, String nombre, LocalDateTime fechaInicio, LocalDateTime fechaFin){
+    public Concurso (int id, String nombre, LocalDate fechaInicio, LocalDate fechaFin, RegistroDeInscriptos registro){
         if (fechaNull(fechaFin) || fechaNull(fechaInicio)){
             throw new RuntimeException(FECHA_NULA);
         }
@@ -27,11 +28,12 @@ public class Concurso {
         if (fechaFin.isBefore(fechaInicio)){
             throw new RuntimeException(FECHA_FIN_INCORRECTA);
         }
-        this.id = id;
+        this.idConcurso = id;
         this.inscriptos = new ArrayList<>();
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.nombre= nombre;
+        this.registro = registro;
 
     }
 
@@ -39,7 +41,7 @@ public class Concurso {
         return this.inscriptos.contains(participante);
     }
 
-    public void nuevaInscripcion(Participante participante, LocalDateTime fechaInscripcion){
+    public void nuevaInscripcion(Participante participante, LocalDate fechaInscripcion){
         if (validarFechas(fechaInscripcion)){
             throw new RuntimeException(FECHA_FUERA_DE_RANGO);
         }
@@ -48,24 +50,25 @@ public class Concurso {
         }
     }
 
-    private boolean validarFechas(LocalDateTime fechaInscripcion){
+    private boolean validarFechas(LocalDate fechaInscripcion){
         return fechaInscripcion.isBefore(this.fechaInicio) || fechaInscripcion.isAfter(this.fechaFin);
     }
 
-    private void gestionarInscripcion(Participante participante, LocalDateTime fechaInscripcion){
+    private void gestionarInscripcion(Participante participante, LocalDate fechaInscripcion){
         if (!participanteInscripto(participante)){
             this.inscriptos.add(participante);
             participante.fechaDeInscripcion(fechaInscripcion);
+            registro.registrarInscripto(participante.fechaInscripcion, participante.id, this.idConcurso);
             gestionarPuntos(participante, fechaInscripcion);
         }
     }
-    private void gestionarPuntos(Participante participante, LocalDateTime fechaInscripcion){
+    private void gestionarPuntos(Participante participante, LocalDate fechaInscripcion){
         if(this.fechaInicio.isEqual(participante.fechaInscripcion)){
             participante.sumarPuntos();
         }
     }
 
-    private boolean fechaNull(LocalDateTime fecha) {
+    private boolean fechaNull(LocalDate fecha) {
         return fecha == null;
     }
     public int cantidadInscriptos(){
