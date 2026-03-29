@@ -1,6 +1,7 @@
 package ejercicios;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -13,49 +14,61 @@ public class ConcursoTest {
     LocalDate fechaInicio;
     LocalDate fechaFin;
     LocalDate fechaInscripcion;
-    RegistroDeInscriptos registro;
+    RegistroInscriptosFake registro;
+    ServiceMailFake serviceMailFake;
+    String esperado;
 
     @BeforeEach
     void setUp(){
         this.maria = new Participante(1, "maria", "23456789", "mperez@gmail.com");
-        this.fechaInicio = LocalDate.of(2025, 2, 11);
-        this.fechaFin = LocalDate.of(2025, 2, 15);
-        this.registro = new ArchivoDeInscriptos("F:\\proyectos\\sistemas\\2026-2028\\archivoInscriptos.txt");
-        this.concurso = new Concurso(1, "concurso 1", fechaInicio, fechaFin,registro);
+        this.fechaInicio = LocalDate.of(2026, 2, 11);
+        this.fechaFin = LocalDate.of(2026, 2, 15);
+        this.serviceMailFake = new ServiceMailFake();
+        this.registro = new RegistroInscriptosFake();
+        this.concurso = new Concurso(1, "concurso 1", fechaInicio, fechaFin,registro, serviceMailFake);
     }
     @Test
+    @DisplayName("Un participante se inscribe a un concurso")
     public void testInscripciónExitosa() {
-        //un participante se inscribe a un concurso
         //setup
-        this.fechaInscripcion = LocalDate.of(2025, 2, 13);
-
+        this.fechaInscripcion = LocalDate.of(2026, 2, 13);
         //ejercitación
         concurso.nuevaInscripcion(maria, fechaInscripcion);
-
+        String esperado = "13/02/2026, 1, 1\n";
         //verificación
         assertTrue(concurso.participanteInscripto(maria));
         assertEquals(1, concurso.cantidadInscriptos());
+        assertTrue(registro.startWith("13/02/2026"));
+        assertEquals(esperado.replace("\n", System.lineSeparator()),
+                registro.data());
+        assertEquals("mperez@gmail.com - Inscripcion: Su inscripción al concurso fue exitosa.", serviceMailFake.mail());
     }
 
     @Test
+    @DisplayName("un participante se inscribe a un concurso el primer dia de abierta la inscripción")
     public void testInscripcionPrimerDia() {
-        //un participante se inscribe a un concurso el primer dia de abierta la inscripción
         //setup
 
         //ejercitación
         concurso.nuevaInscripcion(maria, fechaInicio);
+        String esperado = "11/02/2026, 1, 1\n";
 
         //verificación
         assertTrue(concurso.participanteInscripto(maria));
         assertEquals(1, concurso.cantidadInscriptos());
         assertEquals(PUNTOS_GANADOS, maria.puntos());
+        assertTrue(registro.startWith("11/02/2026"));
+        assertEquals(esperado.replace("\n", System.lineSeparator()),
+                registro.data());
+        assertEquals("mperez@gmail.com - Inscripcion: Su inscripción al concurso fue exitosa.", serviceMailFake.mail());
     }
 
     @Test
+    @DisplayName("Un participante se inscribe fuera de rango")
     public void testInscripcionFueraDeRango(){
-        //un participante se inscribe fuera de rango
+
         //setup
-        LocalDate fechaInscripcion = LocalDate.of(2025, 2, 16);
+        LocalDate fechaInscripcion = LocalDate.of(2026, 2, 16);
 
         //ejercitación y verificación
         RuntimeException exception = assertThrows(RuntimeException.class, ()->{
@@ -69,12 +82,12 @@ public class ConcursoTest {
         assertFalse(concurso.participanteInscripto(maria));
     }
     @Test
+    @DisplayName("Creación de concurso con fecha null")
     public void testFechaNula() {
-        //Creación de concurso con fecha null
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
 
-            new Concurso(1, "concurso 1", null, null, registro);
+            new Concurso(1, "concurso 1", null, null, registro,serviceMailFake );
 
         });
         assertNotNull(exception);

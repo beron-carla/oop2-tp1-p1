@@ -16,9 +16,10 @@ public class Concurso {
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private RegistroDeInscriptos registro;
+    private IMailService emailService;
 
 
-    public Concurso (int id, String nombre, LocalDate fechaInicio, LocalDate fechaFin, RegistroDeInscriptos registro){
+    public Concurso (int id, String nombre, LocalDate fechaInicio, LocalDate fechaFin, RegistroDeInscriptos registro, IMailService emailService){
         if (fechaNull(fechaFin) || fechaNull(fechaInicio)){
             throw new RuntimeException(FECHA_NULA);
         }
@@ -34,6 +35,7 @@ public class Concurso {
         this.fechaFin = fechaFin;
         this.nombre= nombre;
         this.registro = registro;
+        this.emailService = emailService;
 
     }
 
@@ -59,6 +61,7 @@ public class Concurso {
             this.inscriptos.add(participante);
             participante.fechaDeInscripcion(fechaInscripcion);
             registro.registrarInscripto(participante.fechaInscripcion, participante.id, this.idConcurso);
+            emailService.enviarCorreo(participante.email, "Inscripcion","Su inscripción al concurso fue exitosa.");
             gestionarPuntos(participante, fechaInscripcion);
         }
     }
